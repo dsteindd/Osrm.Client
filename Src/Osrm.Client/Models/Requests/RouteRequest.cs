@@ -17,7 +17,7 @@ namespace Osrm.Client.Models.Requests
             Geometries = "polyline6";
             Overview = DefaultOverview;
             ContinueStraight = DefaultContinueStraight;
-            Annotations = new string[0];
+            Annotations = new List<string>();
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Osrm.Client.Models.Requests
         /// <summary>
         /// Add annotation to the route response either duration, distance or/and speed. Separate with "," and without whitespace.
         /// </summary>
-        public string[] Annotations { get; set; }
+        private List<string> Annotations { get; set; }
 
         public override List<Tuple<string, string>> UrlParams
         {
@@ -69,9 +69,35 @@ namespace Osrm.Client.Models.Requests
                     .AddStringParameter("continue_straight", ContinueStraight,
                         () => ContinueStraight != DefaultContinueStraight)
                     .AddStringParameter("annotations", string.Join(",", Annotations),
-                        () => Annotations.Length != 0);
+                        () => Annotations.Count > 0);
 
                 return urlParams;
+            }
+        }
+
+        public RouteRequest AddDistanceAnnotation()
+        {
+            AddAnnotationIfNotPresent("distance");
+            return this;
+        }
+
+        public RouteRequest AddDurationAnnotation()
+        {
+            AddAnnotationIfNotPresent("duration");
+            return this;
+        }
+
+        public RouteRequest AddSpeedAnnotation()
+        {
+            AddAnnotationIfNotPresent("speed");
+            return this;
+        }
+
+        private void AddAnnotationIfNotPresent(string annotation)
+        {
+            if (!Annotations.Contains(annotation))
+            {
+                Annotations.Add(annotation);
             }
         }
     }

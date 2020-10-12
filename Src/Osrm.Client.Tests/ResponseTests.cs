@@ -25,18 +25,29 @@ namespace Osrm.Client.Tests
             Assert.IsTrue(result.Waypoints.Length > 0);
             Assert.IsTrue(result.Routes[0].Legs.Length > 0);
 
-            var result2 = osrm.Route(new RouteRequest()
+            var request = new RouteRequest()
             {
                 Coordinates = locations,
                 Alternative = false,
                 Overview = "full",
-                Annotations = new []{"distance", "duration", "speed"}
-            }).GetAwaiter().GetResult();
+            };
+
+            request
+                .AddDistanceAnnotation()
+                .AddDurationAnnotation()
+                .AddSpeedAnnotation();
+
+            var result2 = osrm.Route(request).GetAwaiter().GetResult();
 
             Assert.AreEqual<string>("Ok", result2.Code);
             Assert.IsTrue(result2.Routes.Length > 0);
             Assert.IsTrue(result2.Waypoints.Length > 0);
             Assert.IsTrue(result2.Routes[0].Legs.Length > 0);
+            
+            // check that there is a duration/distance/speed annotation
+            Assert.IsNotNull(result2.Routes[0].Legs[0].LegAnnotation.Distance);
+            Assert.IsNotNull(result2.Routes[0].Legs[0].LegAnnotation.Duration);
+            Assert.IsNotNull(result2.Routes[0].Legs[0].LegAnnotation.Speed);
 
             var result3 = osrm.Route(new RouteRequest()
             {
@@ -48,10 +59,13 @@ namespace Osrm.Client.Tests
             Assert.IsTrue(result3.Routes.Length > 0);
             Assert.IsTrue(result3.Waypoints.Length > 0);
             Assert.IsTrue(result3.Routes[0].Legs.Length > 0);
+            
+            // check that there are no annotations
+            Assert.IsNull(result3.Routes[0].Legs[0].LegAnnotation);
         }
 
         [TestMethod]
-        public void Table_Response()
+        public void Table_Response_DefaultAnnotations()
         {
             var locations = new Location[] {
                 new Location(52.554070m, 13.160621m),
@@ -67,6 +81,8 @@ namespace Osrm.Client.Tests
             Assert.AreEqual<int>(4, result.Durations[1].Length);
             Assert.AreEqual<int>(4, result.Durations[2].Length);
             Assert.AreEqual<int>(4, result.Durations[3].Length);
+            
+            Assert.IsNull(result.Distances);
 
             var srcAndDests = new Location[] {
                 new Location(52.554070m, 13.160621m),
@@ -85,6 +101,116 @@ namespace Osrm.Client.Tests
             Assert.AreEqual<string>("Ok", result.Code);
             Assert.AreEqual<int>(1, result2.Durations.Length);
             Assert.AreEqual<int>(3, result2.Durations[0].Length);
+            
+            Assert.IsNull(result.Distances);
+        }
+        
+        [TestMethod]
+        public void Table_Response_DistanceAnnotation()
+        {
+            var locations = new Location[] {
+                new Location(52.554070m, 13.160621m),
+                new Location(52.431272m, 13.720654m),
+                new Location(52.554070m, 13.720654m),
+                new Location(52.554070m, 13.160621m),
+            };
+            
+            var tableRequest = new TableRequest()
+            {
+                Coordinates = locations,
+                Annotations = TableRequestAnnotation.OnlyDistances
+            };
+
+            var result = osrm.Table(tableRequest).GetAwaiter().GetResult();
+            Assert.AreEqual<string>("Ok", result.Code);
+            Assert.AreEqual<int>(4, result.Distances.Length);
+            Assert.AreEqual<int>(4, result.Distances[0].Length);
+            Assert.AreEqual<int>(4, result.Distances[1].Length);
+            Assert.AreEqual<int>(4, result.Distances[2].Length);
+            Assert.AreEqual<int>(4, result.Distances[3].Length);
+            
+            Assert.IsNull(result.Durations);
+
+            var srcAndDests = new Location[] {
+                new Location(52.554070m, 13.160621m),
+                new Location(52.431272m, 13.720654m),
+                new Location(52.554070m, 13.720654m),
+                new Location(52.554070m, 13.160621m),
+            };
+
+            var result2 = osrm.Table(new TableRequest()
+            {
+                Coordinates = srcAndDests,
+                Annotations = TableRequestAnnotation.OnlyDistances,
+                Sources = new uint[] { 0 },
+                Destinations = new uint[] { 1, 2, 3 }
+            }).GetAwaiter().GetResult();
+
+            Assert.AreEqual<string>("Ok", result.Code);
+            Assert.AreEqual<int>(1, result2.Distances.Length);
+            Assert.AreEqual<int>(3, result2.Distances[0].Length);
+            
+            Assert.IsNull(result.Durations);
+        }
+        
+        [TestMethod]
+        public void Table_Response_DurationAndDistanceAnnotation()
+        {
+            var locations = new Location[] {
+                new Location(52.554070m, 13.160621m),
+                new Location(52.431272m, 13.720654m),
+                new Location(52.554070m, 13.720654m),
+                new Location(52.554070m, 13.160621m),
+            };
+            
+            var tableRequest = new TableRequest()
+            {
+                Coordinates = locations,
+                Annotations = TableRequestAnnotation.DistancesAndDurations
+            };
+
+            var result = osrm.Table(tableRequest).GetAwaiter().GetResult();
+            
+            // check distances
+            Assert.AreEqual<string>("Ok", result.Code);
+            Assert.AreEqual<int>(4, result.Distances.Length);
+            Assert.AreEqual<int>(4, result.Distances[0].Length);
+            Assert.AreEqual<int>(4, result.Distances[1].Length);
+            Assert.AreEqual<int>(4, result.Distances[2].Length);
+            Assert.AreEqual<int>(4, result.Distances[3].Length);
+            
+            // check durations
+            Assert.AreEqual<int>(4, result.Durations.Length);
+            Assert.AreEqual<int>(4, result.Durations[0].Length);
+            Assert.AreEqual<int>(4, result.Durations[1].Length);
+            Assert.AreEqual<int>(4, result.Durations[2].Length);
+            Assert.AreEqual<int>(4, result.Durations[3].Length);
+            
+
+            var srcAndDests = new Location[] {
+                new Location(52.554070m, 13.160621m),
+                new Location(52.431272m, 13.720654m),
+                new Location(52.554070m, 13.720654m),
+                new Location(52.554070m, 13.160621m),
+            };
+
+            var result2 = osrm.Table(new TableRequest()
+            {
+                Coordinates = srcAndDests,
+                Annotations = TableRequestAnnotation.DistancesAndDurations,
+                Sources = new uint[] { 0 },
+                Destinations = new uint[] { 1, 2, 3 }
+            }).GetAwaiter().GetResult();
+            
+            // check durations
+            Assert.AreEqual<string>("Ok", result.Code);
+            Assert.AreEqual<int>(1, result2.Durations.Length);
+            Assert.AreEqual<int>(3, result2.Durations[0].Length);
+
+            // check distances
+            Assert.AreEqual<string>("Ok", result.Code);
+            Assert.AreEqual<int>(1, result2.Distances.Length);
+            Assert.AreEqual<int>(3, result2.Distances[0].Length);
         }
 
         [TestMethod]

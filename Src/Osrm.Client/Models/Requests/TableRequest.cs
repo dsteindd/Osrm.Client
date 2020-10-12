@@ -12,6 +12,7 @@ namespace Osrm.Client.Models.Requests
         {
             Sources = new uint[0];
             Destinations = new uint[0];
+            Annotations = new string[0];
         }
 
         /// <summary>
@@ -25,6 +26,8 @@ namespace Osrm.Client.Models.Requests
         /// {index};{index}[;{index} ...] or all (default)
         /// </summary>
         public uint[] Destinations { get; set; }
+        
+        public string[] Annotations { get; set; }
 
         public override List<Tuple<string, string>> UrlParams
         {
@@ -34,10 +37,20 @@ namespace Osrm.Client.Models.Requests
 
                 urlParams
                     .AddParams("sources", Sources.Select(x => x.ToString()).ToArray())
-                    .AddParams("destinations", Destinations.Select(x => x.ToString()).ToArray());
+                    .AddParams("destinations", Destinations.Select(x => x.ToString()).ToArray())
+                    .AddStringParameter("annotations", string.Join(",", Annotations),
+                        () => Annotations.Length != 0);
 
                 return urlParams;
             }
         }
+    }
+
+    public static class TableRequestAnnotation
+    {
+        public static string[] OnlyDistances = new[] {"distance"};
+        // is the default
+        public static string[] OnlyDurations = new string[0];
+        public static string[] DistancesAndDurations = new []{"distance", "duration"};
     }
 }

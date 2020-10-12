@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Osrm.Client.Models
 {
-    public class Annotation
+    public class LegAnnotation
     {
         [JsonPropertyName("distance")]
         public decimal[] Distance { get; set; }

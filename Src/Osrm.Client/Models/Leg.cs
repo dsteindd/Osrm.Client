@@ -27,6 +27,6 @@ namespace Osrm.Client.Models
         public decimal Weight { get; set; }
         
         [JsonPropertyName("annotation")]
-        public Annotation Annotation { get; set; }
+        public LegAnnotation LegAnnotation { get; set; }
     }
 }
