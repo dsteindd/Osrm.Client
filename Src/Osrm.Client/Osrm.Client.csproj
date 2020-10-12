@@ -2,20 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Version>3.5.0</Version>
-    <Authors>Scott Morrison</Authors>
-    <Company>Jubilsoft Technologies LLC</Company>
-    <PackageId>Osrm.Client.NetCore</PackageId>
-    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <Product>Osrm.Client.NetCore</Product>
-    <Description>Http client for OSRM 5x API based on .Net Core</Description>
-    <Copyright>Copyright (c) 2020 Jubilsoft Technologies, LLC</Copyright>
-    <RepositoryUrl>https://github.com/jubilee-scott/Osrm.Client</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/jubilee-scott/Osrm.Client</PackageProjectUrl>
-    <AssemblyVersion>3.5.0.1</AssemblyVersion>
-    <FileVersion>3.5.0.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
