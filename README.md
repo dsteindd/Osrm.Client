@@ -2,28 +2,16 @@ Osrm.Client
 ==========
 A Http client for OSRM for 5x API
 
-Forked from https://github.com/narfunikita/Osrm.Client - version 3.0.0.0
+Forked from https://github.com/JubilsoftTechnologies/Osrm.Client - version 3.5.0.1
 
 ## Changes from forked version:
+- resolved switched waypoint latitude/longitude bug
+- moved from using double to decimal for distance,duration,latitude,longitude
+- added annotations for RouteRequest (in order to get time/distance info along geometry)
+- added annotations for TableRequest (in order to get distance matrix as well)
+- use of polyline6 default format for geometry response decoding
 
-#### v3.5.0.1
-  - Minor code clean-ups.
-
-#### v3.5.0.0
-  - Unify namespaces (further clean-up of 4x related code).
-  - Added IOsrmClient interface for Osrm5x class.
-  - Bumped version to get away from ones used by forked project's Nuget release.
-
-#### v3.0.0.1
-  - Migrated implementation and tests to .NetCore 3.1.
-  - Replaced WebClient with newer HttpClient implementation.
-  - OSRM server requests are now handled asynchronously.
-  - Replaced dependency on NewtonSoft.json with System.Text.Json.
-  - Removed 4x API implementation.
-  - Fixed various bugs and omissions.
-
-
-## Usage Summary: 
+## Usage Summary (from forked repo): 
   (see also OSRM documentation - http://project-osrm.org/docs/v5.22.0/api)
 #### Route
 ```csharp
