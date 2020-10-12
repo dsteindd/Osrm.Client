@@ -11,14 +11,14 @@ namespace Osrm.Client.Tests
     public class RequestUrlsTests
     {
         private readonly Location[] locations = new Location[] {
-                new Location(52.503033, 13.420526),
-                new Location(52.516582, 13.42929),
+                new Location(52.503033m, 13.420526m),
+                new Location(52.516582m, 13.42929m),
             };
 
         private readonly Location[] matchLocations = new Location[] {
-                new Location(52.542648, 13.393252),
-                new Location(52.543079, 13.394780),
-                new Location(52.542107, 13.397389)
+                new Location(52.542648m, 13.393252m),
+                new Location(52.543079m, 13.394780m),
+                new Location(52.542107m, 13.397389m)
             };
 
         private string[] ParamValues(List<Tuple<string, string>> urlParams, string paramKey)
@@ -111,7 +111,7 @@ namespace Osrm.Client.Tests
         {
             var r = new NearestRequest()
             {
-                Coordinates = new Location[] { new Location(52.4224, 13.333086) }
+                Coordinates = new Location[] { new Location(52.4224m, 13.333086m) }
             };
 
             // Default values are not sent

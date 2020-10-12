@@ -30,7 +30,7 @@ namespace Osrm.Client.Models
         public int Exit { get; set; }
 
         [JsonPropertyName("location")]
-        public double[] LocationArr { get; set; }
+        public decimal[] LocationArr { get; set; }
 
         public Location Location
         {

@@ -13,7 +13,7 @@ namespace Osrm.Client.Models.Requests
 
         public TripRequest()
         {
-            Geometries = DefaultGeometries;
+            Geometries = "polyline6";
             Overview = DefaultOverview;
         }
 

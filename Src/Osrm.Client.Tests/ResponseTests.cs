@@ -14,8 +14,8 @@ namespace Osrm.Client.Tests
         public void Route_Response()
         {
             var locations = new Location[] {
-                new Location(52.503033, 13.420526),
-                new Location(52.516582, 13.429290),
+                new Location(52.503033m, 13.420526m),
+                new Location(52.516582m, 13.429290m),
             };
 
             var result = osrm.Route(locations).GetAwaiter().GetResult();
@@ -28,7 +28,9 @@ namespace Osrm.Client.Tests
             var result2 = osrm.Route(new RouteRequest()
             {
                 Coordinates = locations,
-                Alternative = false
+                Alternative = false,
+                Overview = "full",
+                Annotations = new []{"distance", "duration", "speed"}
             }).GetAwaiter().GetResult();
 
             Assert.AreEqual<string>("Ok", result2.Code);
@@ -52,10 +54,10 @@ namespace Osrm.Client.Tests
         public void Table_Response()
         {
             var locations = new Location[] {
-                new Location(52.554070, 13.160621),
-                new Location(52.431272, 13.720654),
-                new Location(52.554070, 13.720654),
-                new Location(52.554070, 13.160621),
+                new Location(52.554070m, 13.160621m),
+                new Location(52.431272m, 13.720654m),
+                new Location(52.554070m, 13.720654m),
+                new Location(52.554070m, 13.160621m),
             };
 
             var result = osrm.Table(locations).GetAwaiter().GetResult();
@@ -67,10 +69,10 @@ namespace Osrm.Client.Tests
             Assert.AreEqual<int>(4, result.Durations[3].Length);
 
             var srcAndDests = new Location[] {
-                new Location(52.554070, 13.160621),
-                new Location(52.431272, 13.720654),
-                new Location(52.554070, 13.720654),
-                new Location(52.554070, 13.160621),
+                new Location(52.554070m, 13.160621m),
+                new Location(52.431272m, 13.720654m),
+                new Location(52.554070m, 13.720654m),
+                new Location(52.554070m, 13.160621m),
             };
 
             var result2 = osrm.Table(new TableRequest()
@@ -89,9 +91,9 @@ namespace Osrm.Client.Tests
         public void Match_Response()
         {
             var locations = new Location[] {
-                new Location(52.542648, 13.393252),
-                new Location(52.543079, 13.394780),
-                new Location(52.542107, 13.397389)
+                new Location(52.542648m, 13.393252m),
+                new Location(52.543079m, 13.394780m),
+                new Location(52.542107m, 13.397389m)
             };
 
             var req = new MatchRequest()
@@ -111,18 +113,34 @@ namespace Osrm.Client.Tests
         [TestMethod]
         public void Nearest_Response()
         {
-            var result = osrm.Nearest(new Location(52.4224, 13.333086)).GetAwaiter().GetResult();
+            var locToSnap = new Location(52.4224m, 13.333086m);
+            
+            
+            var result = osrm.Nearest(locToSnap).GetAwaiter().GetResult();
 
             Assert.AreEqual<string>("Ok", result.Code);
             Assert.IsNotNull(result.Waypoints);
+            Assert.AreEqual(1, result.Waypoints.Length);
+            Assert.IsTrue(result.Waypoints[0].Distance > 0);
+            
+            // double snapping should be idempotent
+            var result2 = osrm.Nearest(result.Waypoints[0].Location).GetAwaiter().GetResult();
+            
+            Assert.AreEqual(OsrmCode.Ok, result2.Code);
+            Assert.IsNotNull(result2.Waypoints);
+            Assert.AreEqual(1, result2.Waypoints.Length);
+            
+            Assert.AreEqual(result.Waypoints[0].Location.Latitude, result2.Waypoints[0].Location.Latitude);
+            Assert.AreEqual(result.Waypoints[0].Location.Longitude, result2.Waypoints[0].Location.Longitude);
+            Assert.AreEqual(0, result2.Waypoints[0].Distance);
         }
 
         [TestMethod]
         public void Trip_Response()
         {
             var locations = new Location[] {
-                new Location(52.503033, 13.420526),
-                new Location(52.516582, 13.429290),
+                new Location(52.503033m, 13.420526m),
+                new Location(52.516582m, 13.429290m),
             };
 
             var result =  osrm.Trip(locations).GetAwaiter().GetResult();

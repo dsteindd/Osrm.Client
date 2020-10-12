@@ -11,7 +11,7 @@ namespace Osrm.Client.Models
     public class Waypoint
     {
         [JsonPropertyName("distance")]
-        public double Distance { get; set; }
+        public decimal Distance { get; set; }
 
         /// <summary>
         /// Unique internal identifier of the segment (ephemeral, not constant over data updates) This can be used on subsequent request to significantly speed up the query and to connect multiple services. E.g. you can use the hint value obtained by the nearest query as hint values for route inputs.
@@ -20,7 +20,7 @@ namespace Osrm.Client.Models
         public string Hint { get; set; }
 
         [JsonPropertyName("location")]
-        public double[] LocationArr { get; set; }
+        public decimal[] LocationArr { get; set; }
 
         public Location Location
         {
@@ -29,7 +29,7 @@ namespace Osrm.Client.Models
                 if (LocationArr == null)
                     return null;
 
-                return new Location(LocationArr[0], LocationArr[1]);
+                return new Location(LocationArr[1], LocationArr[0]);
             }
         }
 

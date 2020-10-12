@@ -7,7 +7,7 @@ namespace Osrm.Client.Demo
 {
     class Program
     {
-        public static string OsrmUrl = "http://router.project-osrm.org/";
+        private static string OsrmUrl = "http://router.project-osrm.org";
 
         private static void Main(string[] args)
         {
@@ -21,11 +21,11 @@ namespace Osrm.Client.Demo
             Trip5x(osrm5x).GetAwaiter().GetResult();
         }
 
-        private async static Task Route5x(Osrm5x osrm)
+        private static async Task Route5x(Osrm5x osrm)
         {
             var locations = new Location[] {
-                new Location(52.503033, 13.420526),
-                new Location(52.516582, 13.429290),
+                new Location(52.503033m, 13.420526m),
+                new Location(52.516582m, 13.429290m),
             };
 
             var result = await osrm.Route(locations);
@@ -44,17 +44,17 @@ namespace Osrm.Client.Demo
             var instructions3 = result2.Routes[0].Legs[0].Steps;
         }
 
-        private async static Task Nearest5x(Osrm5x osrm)
+        private static async Task Nearest5x(Osrm5x osrm)
         {
-            var result = await osrm.Nearest(new Location(52.4224, 13.333086));
+            var result = await osrm.Nearest(new Location(52.4224m, 13.333086m));
         }
 
-        private async static Task Table5x(Osrm5x osrm)
+        private static async Task Table5x(Osrm5x osrm)
         {
             var locations = new Location[] {
-                new Location(52.517037, 13.388860),
-                new Location(52.529407, 13.397634),
-                new Location(52.523219, 13.428555)
+                new Location(52.517037m, 13.388860m),
+                new Location(52.529407m, 13.397634m),
+                new Location(52.523219m, 13.428555m)
             };
 
             //Returns a 3x3 matrix:
@@ -81,12 +81,12 @@ namespace Osrm.Client.Demo
             });
         }
 
-        private async static Task Match5x(Osrm5x osrm)
+        private static async Task Match5x(Osrm5x osrm)
         {
             var locations = new Location[] {
-                new Location(52.517037, 13.388860),
-                new Location(52.529407, 13.397634),
-                new Location(52.523219, 13.428555)
+                new Location(52.517037m, 13.388860m),
+                new Location(52.529407m, 13.397634m),
+                new Location(52.523219m, 13.428555m)
             };
 
             var request = new MatchRequest()
@@ -100,8 +100,8 @@ namespace Osrm.Client.Demo
         private async static Task Trip5x(Osrm5x osrm)
         {
             var locations = new Location[] {
-                new Location(52.503033, 13.420526),
-                new Location(52.516582, 13.429290),
+                new Location(52.503033m, 13.420526m),
+                new Location(52.516582m, 13.429290m),
             };
 
             var result = await osrm.Trip(locations);

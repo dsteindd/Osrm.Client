@@ -11,10 +11,10 @@ namespace Osrm.Client.Models
     public class Route
     {
         [JsonPropertyName("distance")]
-        public double Distance { get; set; }
+        public decimal Distance { get; set; }
 
         [JsonPropertyName("duration")]
-        public double Duration { get; set; }
+        public decimal Duration { get; set; }
 
         [JsonPropertyName("geometry")]
         public string GeometryStr { get; set; }
@@ -28,7 +28,7 @@ namespace Osrm.Client.Models
                     return new Location[0];
                 }
 
-                return OsrmPolylineConverter.Decode(GeometryStr, 1E5)
+                return OsrmPolylineConverter.Decode(GeometryStr, 1E6m)
                     .ToArray();
             }
         }

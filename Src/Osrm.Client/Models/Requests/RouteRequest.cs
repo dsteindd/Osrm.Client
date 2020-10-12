@@ -14,9 +14,10 @@ namespace Osrm.Client.Models.Requests
 
         public RouteRequest()
         {
-            Geometries = DefaultGeometries;
+            Geometries = "polyline6";
             Overview = DefaultOverview;
             ContinueStraight = DefaultContinueStraight;
+            Annotations = new string[0];
         }
 
         /// <summary>
@@ -33,7 +34,7 @@ namespace Osrm.Client.Models.Requests
 
         /// <summary>
         /// Returned route geometry format (influences overview and per step)
-        /// polyline (default), geojson
+        /// polyline6 (default), geojson
         /// </summary>
         public string Geometries { get; set; }
 
@@ -48,6 +49,11 @@ namespace Osrm.Client.Models.Requests
         /// default (default), true, false
         /// </summary>
         public string ContinueStraight { get; set; }
+        
+        /// <summary>
+        /// Add annotation to the route response either duration, distance or/and speed. Separate with "," and without whitespace.
+        /// </summary>
+        public string[] Annotations { get; set; }
 
         public override List<Tuple<string, string>> UrlParams
         {
@@ -60,7 +66,10 @@ namespace Osrm.Client.Models.Requests
                     .AddBoolParameter("steps", Steps, false)
                     .AddStringParameter("geometries", Geometries, () => Geometries != DefaultGeometries)
                     .AddStringParameter("overview", Overview, () => Overview != DefaultOverview)
-                    .AddStringParameter("continue_straight", ContinueStraight, () => ContinueStraight != DefaultContinueStraight);
+                    .AddStringParameter("continue_straight", ContinueStraight,
+                        () => ContinueStraight != DefaultContinueStraight)
+                    .AddStringParameter("annotations", string.Join(",", Annotations),
+                        () => Annotations.Length != 0);
 
                 return urlParams;
             }

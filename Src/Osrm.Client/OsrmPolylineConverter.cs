@@ -9,9 +9,9 @@ namespace Osrm.Client
 {
     internal class OsrmPolylineConverter
     {
-        public const double DefaultFactor = 1E6;
+        private const decimal DefaultFactor = 1E6m;
 
-        public static IEnumerable<Location> Decode(string encodedPoints, double factor = DefaultFactor)
+        public static IEnumerable<Location> Decode(string encodedPoints, decimal factor = DefaultFactor)
         {
             if (string.IsNullOrEmpty(encodedPoints))
                 throw new ArgumentNullException("encodedPoints");
@@ -59,13 +59,13 @@ namespace Osrm.Client
 
                 yield return new Location()
                 {
-                    Latitude = Convert.ToDouble(currentLat) / factor,
-                    Longitude = Convert.ToDouble(currentLng) / factor
+                    Latitude = Convert.ToDecimal(currentLat) / factor,
+                    Longitude = Convert.ToDecimal(currentLng) / factor
                 };
             }
         }
 
-        public static string Encode(IEnumerable<Location> points, double factor = DefaultFactor)
+        public static string Encode(IEnumerable<Location> points, decimal factor = DefaultFactor)
         {
             var str = new StringBuilder();
 

@@ -13,7 +13,7 @@ namespace Osrm.Client.Models.Requests
 
         public MatchRequest()
         {
-            Geometries = DefaultGeometries;
+            Geometries = "polyline6";
             Overview = DefaultOverview;
             Timestamps = new int[0];
         }

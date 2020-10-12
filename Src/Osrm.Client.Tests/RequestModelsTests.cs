@@ -13,7 +13,7 @@ namespace Osrm.Client.Tests
             var r = new RouteRequest();
             Assert.AreEqual<bool>(false, r.Alternative);
             Assert.AreEqual<bool>(false, r.Steps);
-            Assert.AreEqual<string>("polyline", r.Geometries);
+            Assert.AreEqual<string>("polyline6", r.Geometries);
             Assert.AreEqual<string>("simplified", r.Overview);
             Assert.AreEqual<string>("default", r.ContinueStraight);
         }
@@ -31,7 +31,7 @@ namespace Osrm.Client.Tests
         {
             var r = new MatchRequest();
             Assert.AreEqual<bool>(false, r.Steps);
-            Assert.AreEqual<string>("polyline", r.Geometries);
+            Assert.AreEqual<string>("polyline6", r.Geometries);
             Assert.AreEqual<string>("simplified", r.Overview);
             Assert.IsNotNull(r.Timestamps);
         }
@@ -46,13 +46,13 @@ namespace Osrm.Client.Tests
         [TestMethod]
         public void Location_Equals()
         {
-            var a1 = new Location(52.542648, 13.393252);
-            var a2 = new Location(52.542648, 13.393252);
+            var a1 = new Location(52.542648m, 13.393252m);
+            var a2 = new Location(52.542648m, 13.393252m);
             Assert.IsTrue(a1 == a2);
             Assert.IsTrue(a1.Equals(a2));
 
-            var b1 = new Location(12.542648, 13.393252);
-            var b2 = new Location(12.542648, 13.393252);
+            var b1 = new Location(12.542648m, 13.393252m);
+            var b2 = new Location(12.542648m, 13.393252m);
             Assert.IsTrue(b1 == b2);
             Assert.IsTrue(b1.Equals(b2));
         }
@@ -63,7 +63,7 @@ namespace Osrm.Client.Tests
             var r = new TripRequest();
             Assert.AreEqual<bool>(false, r.Annotate);
             Assert.AreEqual<bool>(false, r.Steps);
-            Assert.AreEqual<string>("polyline", r.Geometries);
+            Assert.AreEqual<string>("polyline6", r.Geometries);
             Assert.AreEqual<string>("simplified", r.Overview);
         }
 

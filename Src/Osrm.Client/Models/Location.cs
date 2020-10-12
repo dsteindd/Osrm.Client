@@ -13,15 +13,15 @@ namespace Osrm.Client.Models
         {
         }
 
-        public Location(double latitude, double longitude)
+        public Location(decimal latitude, decimal longitude)
         {
             Latitude = latitude;
             Longitude = longitude;
         }
 
-        public double Latitude { get; set; }
+        public decimal Latitude { get; set; }
 
-        public double Longitude { get; set; }
+        public decimal Longitude { get; set; }
 
         public override bool Equals(System.Object obj)
         {
@@ -50,7 +50,7 @@ namespace Osrm.Client.Models
 
         public override int GetHashCode()
         {
-            return Latitude.GetHashCode() ^ Longitude.GetHashCode();
+            return HashCode.Combine(Latitude, Longitude);
         }
 
         public static bool operator ==(Location a, Location b)

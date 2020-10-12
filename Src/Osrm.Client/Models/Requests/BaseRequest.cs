@@ -53,7 +53,7 @@ namespace Osrm.Client.Models.Requests
 
                 if (SendCoordinatesAsPolyline)
                 {
-                    var encodedLocs = OsrmPolylineConverter.Encode(Coordinates, 1E5);
+                    var encodedLocs = OsrmPolylineConverter.Encode(Coordinates, 1E5m);
                     return "polyline(" + encodedLocs + ")";
                 }
                 else

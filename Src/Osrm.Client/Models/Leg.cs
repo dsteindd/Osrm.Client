@@ -12,10 +12,10 @@ namespace Osrm.Client.Models
     public class RouteLeg
     {
         [JsonPropertyName("distance")]
-        public double Distance { get; set; }
+        public decimal Distance { get; set; }
 
         [JsonPropertyName("duration")]
-        public double Duration { get; set; }
+        public decimal Duration { get; set; }
 
         [JsonPropertyName("steps")]
         public RouteStep[] Steps { get; set; }
@@ -24,6 +24,9 @@ namespace Osrm.Client.Models
         public string Summary { get; set; }
     
         [JsonPropertyName("weight")]
-        public double Weight { get; set; }
+        public decimal Weight { get; set; }
+        
+        [JsonPropertyName("annotation")]
+        public Annotation Annotation { get; set; }
     }
 }
