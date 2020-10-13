@@ -29,7 +29,7 @@ namespace Osrm.Client.Models
                     return new Location[0];
                 }
 
-                return OsrmPolylineConverter.Decode(GeometryStr, 1E5m)
+                return OsrmPolylineConverter.Decode(GeometryStr, 1E6m)
                     .ToArray();
             }
         }
